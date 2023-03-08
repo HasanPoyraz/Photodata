@@ -235,10 +235,9 @@ def text_to_immage_array(text, cx, rx):
     return array
 
 def array_to_image(array):
-    pyplot.figure(figsize=(5,5))
+    pyplot.figure(figsize=(5,5), frameon=False)
     colormap = colors.ListedColormap(["white", "black"])
-    pyplot.title("Data Matrix")
-
+    pyplot.axis("off")
     pyplot.imshow(array, cmap=colormap)
     pyplot.show()
 
