@@ -1,6 +1,3 @@
-from matplotlib import pyplot
-from matplotlib import colors
-
 DICTIONARY = {
     "\\": 0,
     "a": 1,
@@ -67,8 +64,6 @@ DICTIONARY = {
     "9": 63,
 }
 
-# Sub functions
-
 def format_ascii(input):
     output = input.replace(" ", "\s")
     output = output.replace(".", "\d")
@@ -79,8 +74,6 @@ def format_ascii(input):
     output = output.replace("ğ", "g")
     output = output.replace("ş", "s")
     output = output.replace("ü", "u")
-
-    output += "\e"
 
     return output
 
@@ -183,15 +176,6 @@ def binary_to_code(input):
 
         output.append(cache)
 
-        try:
-            if output[-2] == 0 and output[-1] == 5:
-                del output[-1]
-                del output[-1]
-
-                return output
-        except:
-            pass
-
     return output
 
 def reverse_dictionary(dictionary):
@@ -218,32 +202,6 @@ def rformat_ascii(text):
 
     return text
 
-def text_to_immage_array(text, cx, rx): 
-    array = [[0]*rx for _ in range(cx)]
-    i = 0
-
-    for c in range(cx):
-        for r in range(rx):
-            try:
-                array[c][r] = int(text[i])
-
-            except:
-                array[c][r] = 0
-            
-            i += 1
-
-    return array
-
-def array_to_image(array):
-    pyplot.figure(figsize=(5,5))
-    colormap = colors.ListedColormap(["white", "black"])
-    pyplot.title("Data Matrix")
-
-    pyplot.imshow(array, cmap=colormap)
-    pyplot.show()
-
-# Main functions
-
 def ascii_input(text, dictionary):
     text = format_ascii(text)
     text = ascii_to_code(text, dictionary)
@@ -264,25 +222,13 @@ def binary_input(text, dictionary):
 
     return text
 
-def image_encode(array, c, r):
-    x = len(array)
-    if x > (c * r):
-        print("Insufficent pixels.")
-        print("Should be at least '", x, "' cells.")
-        print("Currently '", c*r, "'.")
+xx = ascii_input("Hello, world.\\", DICTIONARY)
 
-    else:
-        array = text_to_immage_array(array, c, r)
-        array_to_image(array)
+x = xx.replace("1", "▓ ")
+x = x.replace("0", "░ ")
 
-# Demo Usage
+print(x)
 
-f = open("text.txt", "r")
-text = f.read()
-f.close()
+y = binary_input(xx, DICTIONARY)
 
-x1 = ascii_input(text, DICTIONARY) # Ascii to binary
-
-x2 = image_encode(x1, 720, 1080) # Binary to image
-
-x3 = binary_input(x1, DICTIONARY) # Binarry to ascii
+print(y)
