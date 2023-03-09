@@ -1,5 +1,5 @@
-from matplotlib import pyplot
-from matplotlib import colors
+from PIL import Image
+import numpy as np
 
 DICTIONARY = {
     "\\": 0,
@@ -234,13 +234,28 @@ def text_to_immage_array(text, cx, rx):
 
     return array
 
-def array_to_image(array):
-    pyplot.figure(figsize=(5,5), frameon=False)
-    colormap = colors.ListedColormap(["white", "black"])
-    pyplot.axis("off")
-    pyplot.imshow(array, cmap=colormap)
-    pyplot.show()
+def array_to_image(string, r, c):
+    string = str(string)
+    num_pixels = c * r
+    string = string.ljust(num_pixels, "0")
+    array = np.array(list(string)).reshape(r, c)
+    array = array.astype(int)
+    scale_arr = (255*array).astype(np.uint8)
+    img = Image.fromarray(scale_arr, mode="L")
+    
+    img.save("output.png", foramt="PNG")
 
+def image_to_array(img_path):
+    img = Image.open(img_path)
+    width, height = img.size
+    binary_str = ""
+
+    for y in range(height):
+        for x in range(width):
+            pixel = img.getpixel((x, y))
+            binary_str += "0" if pixel == 0 else "1"
+
+    return binary_str
 # Main functions
 
 def ascii_input(text, dictionary):
@@ -248,7 +263,7 @@ def ascii_input(text, dictionary):
     text = ascii_to_code(text, dictionary)
     text = code_to_binary(text)
     text = list_to_string(text)
-
+    print(text[:20])
     return text
 
 def binary_input(text, dictionary):
@@ -271,8 +286,12 @@ def image_encode(array, c, r):
         print("Currently '", c*r, "'.")
 
     else:
-        array = text_to_immage_array(array, c, r)
-        array_to_image(array)
+        #array = text_to_immage_array(array, c, r)
+        array_to_image(array, c, r)
+
+def image_decode(path):
+    arr = image_to_array(path)
+    return arr
 
 # Demo Usage
 
@@ -284,4 +303,8 @@ x1 = ascii_input(text, DICTIONARY) # Ascii to binary
 
 x2 = image_encode(x1, 720, 1080) # Binary to image
 
-x3 = binary_input(x1, DICTIONARY) # Binarry to ascii
+x3 = image_decode("output.png")
+
+x4 = binary_input(x3, DICTIONARY) # Binarry to ascii
+
+print(x4)
