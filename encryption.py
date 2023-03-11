@@ -79,7 +79,8 @@ class ascii_input:
         self.output = self.input.replace(" ", "\s")
         self.output = self.output.replace(".", "\d")
         self.output = self.output.replace(",", "\c")
-        self.output = self.output.replace("i", "ı")
+        self.output = self.output.replace("\n", "\\n")
+        self.output = self.output.replace("ı", "i")
         self.output = self.output.replace("ç", "c")
         self.output = self.output.replace("ö", "o")
         self.output = self.output.replace("ğ", "g")
@@ -236,6 +237,7 @@ class binary_input:
         self.output = self.output.replace("\s", " ")
         self.output = self.output.replace("\d", ".")
         self.output = self.output.replace("\c", ",")
+        self.output = self.output.replace("\\n", "\n")
 
     def reverse_dictionary(self, dictionary):
         rDict = dict()
