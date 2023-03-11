@@ -1,5 +1,6 @@
 from encryption import *
 from imgprocess import *
+from compression import *
 
 def run():
     print("1: Encode text")
@@ -26,10 +27,11 @@ def encode():
     txt = f.read()
     f.close()
 
-    p = ascii_input(txt)
-    y = image_encode(p.output, 720, 1080, y)
+    a = ascii_input(txt)
+    c = compress(a.output)
+    i = image_encode(c.output, 720, 1080, y)
 
-    if y.error == "Insufficent pixels.":
+    if i.error == "Insufficent pixels.":
         print("Insufficent pixels.")
         print("Should be at least '", y.alen, "' cells.")
         print("Currently '", y.pn, "'.")
@@ -38,10 +40,10 @@ def decode():
     print("File to decode from (eg: desktop/output.png).")
     x = input("Path: ")
 
-    p = image_decode(x)
+    i = image_decode(x)
+    dc = decompress(i.output)
+    b = binary_input(dc.output)
 
-    y = binary_input(p.output)
-
-    print(y.output)
+    print(b.output[:200])
 
 run()
