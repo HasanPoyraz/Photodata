@@ -1,3 +1,5 @@
+from format import *
+
 DICTIONARY = {
     "\\": 0,
     "a": 1,
@@ -94,6 +96,9 @@ class ascii_input:
         self.output = self.output.replace("Ü", "U")
 
         self.output += "\e"
+
+        fi = foramt_input(self.output)
+        self.output = fi.output
 
     def ascii_to_code(self):
         out = []
